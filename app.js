@@ -1,7 +1,29 @@
-// random number to represent computer action
-function computerAction() {
+// // play(computerAction, userAction);
+// function playGame() {
+//   play(computerAction, userAction);
+//   play(computerAction, userAction);
+//   play(computerAction, userAction);
+//   play(computerAction, userAction);
+//   play(computerAction, userAction);
+// }
+// // playGame();
+const rock = document.querySelector(`#rock`);
+const paper = document.querySelector(`#paper`);
+const scissor = document.querySelector(`#scissor`);
+const reset = document.querySelector(`#reset`);
+const playerScoreUI = document.querySelector(`.scorePlayer`);
+const computerScoreUI = document.querySelector(`.scoreComputer`);
+
+// scoreboard
+let playerScore = 0;
+playerScoreUI.textContent = playerScore;
+let computerScore = 0;
+computerScoreUI.textContent = computerScore;
+
+// get computer action
+const computerAction = () => {
   const random = Math.floor(Math.random() * 3 + 1);
-  let action;
+  let action = '';
   switch (random) {
     case 1:
       action = `rock`;
@@ -14,59 +36,55 @@ function computerAction() {
       break;
   }
   return action;
-}
+};
 
-// user action from prompt
-function userAction() {
-  let action = prompt(`choose action`).toLowerCase();
-  return action;
-}
+// update UI
+const updateUI = () => {
+  playerScoreUI.textContent = playerScore;
+  computerScoreUI.textContent = computerScore;
+};
 
-// score
-let computerScore = 0;
-let humanScore = 0;
-
-function play(computer, user) {
+// play game
+const play = (computer, user) => {
   const computerAction = computer();
-  const userAction = user();
-  console.log(computerAction, userAction);
-  if (computerAction === userAction) {
-    console.log(`draw`);
-  } else if (computerAction === `rock` && userAction === `paper`) {
-    console.log(`computer lose and user won`);
-    humanScore++;
-    console.log(computerScore, humanScore);
-  } else if (computerAction === `rock` && userAction === `scissor`) {
-    console.log(`computer won and user lose`);
-    computerScore++;
-    console.log(computerScore, humanScore);
-  } else if (computerAction === `paper` && userAction === `rock`) {
-    console.log(`computer won and user lose`);
-    computerScore++;
-    console.log(computerScore, humanScore);
-  } else if (computerAction === `paper` && userAction === `scissor`) {
-    console.log(`computer lose and user won`);
-    humanScore++;
-    console.log(computerScore, humanScore);
-  } else if (computerAction === `scissor` && userAction === `rock`) {
-    console.log(`computer lose and user won`);
-    humanScore++;
-    console.log(computerScore, humanScore);
-  } else if (computerAction === `scissor` && userAction === `paper`) {
-    console.log(`computer won and user lose`);
-    computerScore++;
-    console.log(computerScore, humanScore);
-  } else {
-    console.log(`please enter rock, paper or scissor`);
-  }
-}
+  const userAction = user.toLowerCase();
 
-// play(computerAction, userAction);
-function playGame() {
-  play(computerAction, userAction);
-  play(computerAction, userAction);
-  play(computerAction, userAction);
-  play(computerAction, userAction);
-  play(computerAction, userAction);
-}
-playGame();
+  if (computerAction === userAction) {
+    playerScore = playerScore;
+    computerScore = computerScore;
+  } else if (computerAction === `rock` && userAction === `paper`) {
+    playerScore++;
+  } else if (computerAction === `rock` && userAction === `scissor`) {
+    computerScore++;
+  } else if (computerAction === `paper` && userAction === `rock`) {
+    computerScore++;
+  } else if (computerAction === `paper` && userAction === `scissor`) {
+    playerScore++;
+  } else if (computerAction === `scissor` && userAction === `rock`) {
+    playerScore++;
+  } else if (computerAction === `scissor` && userAction === `paper`) {
+    computerScore++;
+  }
+};
+
+// rock
+rock.addEventListener(`click`, (e) => {
+  play(computerAction, e.target.textContent);
+  updateUI();
+});
+// paper
+paper.addEventListener(`click`, (e) => {
+  play(computerAction, e.target.textContent);
+  updateUI();
+});
+// scissor
+scissor.addEventListener(`click`, (e) => {
+  play(computerAction, e.target.textContent);
+  updateUI();
+});
+// reset
+reset.addEventListener(`click`, () => {
+  playerScore = 0;
+  computerScore = 0;
+  updateUI();
+});
